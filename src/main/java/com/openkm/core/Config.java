@@ -108,7 +108,6 @@ public class Config {
 	public static final String PROPERTY_PLUGIN_DEBUG = "plugin.debug";
 	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION = "managed.text.extraction";
 	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION_BATCH = "managed.text.extraction.batch";
-	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_SIZE = "managed.text.extraction.pool.size";
 	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_THREADS = "managed.text.extraction.pool.threads";
 	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_TIMEOUT = "managed.text.extraction.pool.timeout";
 	public static final String PROPERTY_MANAGED_TEXT_EXTRACTION_CONCURRENT = "managed.text.extraction.concurrent";
@@ -363,8 +362,7 @@ public class Config {
 	public static String MOBILE_THEME = "";
 	public static boolean MANAGED_TEXT_EXTRACTION = true;
 	public static int MANAGED_TEXT_EXTRACTION_BATCH = 10;
-	public static int MANAGED_TEXT_EXTRACTION_POOL_SIZE = 5;
-	public static int MANAGED_TEXT_EXTRACTION_POOL_THREADS = 5;
+	public static int MANAGED_TEXT_EXTRACTION_POOL_THREADS = AVAILABLE_PROCESSORS;
 	public static int MANAGED_TEXT_EXTRACTION_POOL_TIMEOUT = 1; // 1 minute
 	public static boolean MANAGED_TEXT_EXTRACTION_CONCURRENT = false;
 	public static boolean REPOSITORY_CONTENT_CHECKSUM = true;
@@ -791,8 +789,6 @@ public class Config {
 			values.put(PROPERTY_MANAGED_TEXT_EXTRACTION, Boolean.toString(MANAGED_TEXT_EXTRACTION));
 			MANAGED_TEXT_EXTRACTION_BATCH = ConfigDAO.getInteger(PROPERTY_MANAGED_TEXT_EXTRACTION_BATCH, MANAGED_TEXT_EXTRACTION_BATCH);
 			values.put(PROPERTY_MANAGED_TEXT_EXTRACTION_BATCH, Integer.toString(MANAGED_TEXT_EXTRACTION_BATCH));
-			MANAGED_TEXT_EXTRACTION_POOL_SIZE = ConfigDAO.getInteger(PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_SIZE, MANAGED_TEXT_EXTRACTION_POOL_SIZE);
-			values.put(PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_SIZE, Integer.toString(MANAGED_TEXT_EXTRACTION_POOL_SIZE));
 			MANAGED_TEXT_EXTRACTION_POOL_THREADS = ConfigDAO.getInteger(PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_THREADS, MANAGED_TEXT_EXTRACTION_POOL_THREADS);
 			values.put(PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_THREADS, Integer.toString(MANAGED_TEXT_EXTRACTION_POOL_THREADS));
 			MANAGED_TEXT_EXTRACTION_POOL_TIMEOUT = ConfigDAO.getInteger(PROPERTY_MANAGED_TEXT_EXTRACTION_POOL_TIMEOUT, MANAGED_TEXT_EXTRACTION_POOL_TIMEOUT);

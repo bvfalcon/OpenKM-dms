@@ -23,6 +23,8 @@ package com.openkm.extractor;
 
 import com.openkm.core.DatabaseException;
 import com.openkm.dao.NodeDocumentDAO;
+
+import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +38,10 @@ public class TextExtractorThread implements Runnable {
 	private static volatile long global = 1;
 	private long id = 0;
 	private TextExtractorWork work = null;
+	private MassIndexerProgressMonitor monitor;
 
-	public TextExtractorThread(TextExtractorWork work) {
+	public TextExtractorThread(MassIndexerProgressMonitor monitor, TextExtractorWork work) {
+		this.monitor = monitor;
 		this.work = work;
 		this.id = global++;
 	}
@@ -47,6 +51,9 @@ public class TextExtractorThread implements Runnable {
 		try {
 			log.debug("processConcurrent.Working {} on {}", id, work);
 			NodeDocumentDAO.getInstance().textExtractorHelper(work);
+			if (monitor != null) {
+				monitor.documentsAdded(1);
+			}
 			log.debug("processConcurrent.Finish {} on {}", id, work);
 		} catch (FileNotFoundException e) {
 			log.warn(e.getMessage(), e);

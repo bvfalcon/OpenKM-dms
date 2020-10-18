@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Rebuild Lucene indexes
@@ -447,7 +448,7 @@ public class RebuildIndexesServlet extends BaseServlet {
 	 */
 	class ProgressMonitor implements MassIndexerProgressMonitor {
 		private PrintWriter pw = null;
-		private long count = 0;
+		private AtomicLong count = new AtomicLong(0);
 		private long total = 0;
 		private long oldPerCent = -1;
 		private long oldPerMile = -1;
@@ -463,8 +464,8 @@ public class RebuildIndexesServlet extends BaseServlet {
 		@Override
 		public void documentsAdded(long size) {
 			log.debug("documentsAdded({})", size);
-			count += size;
-			long perCent = count * 100 / total;
+			long newCount = count.addAndGet(size);
+			long perCent = newCount * 100 / total;
 
 			if (perCent > oldPerCent) {
 				pw.print(" (");
@@ -476,7 +477,7 @@ public class RebuildIndexesServlet extends BaseServlet {
 			pw.flush();
 
 			try {
-				long perMile = count * 1000 / total;
+				long perMile = newCount * 1000 / total;
 
 				if (perMile > oldPerMile) {
 					FileLogger.info(BASE_NAME, "{0} progress {1}%%", tag, perMile);

@@ -188,7 +188,7 @@ public class TextExtractorWorker extends TimerTask {
 			ThreadPoolManager threadPool = new ThreadPoolManager(Config.MANAGED_TEXT_EXTRACTION_POOL_THREADS, "TextExtractorWorker");
 
 			for (TextExtractorWork pendExts : NodeDocumentDAO.getInstance().getPendingExtractions(maxResults)) {
-				threadPool.add(new TextExtractorThread(pendExts));
+				threadPool.add(new TextExtractorThread(monitor, pendExts));
 				inProgress.add(pendExts);
 			}
 
